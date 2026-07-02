@@ -1,17 +1,19 @@
 import express from "express"
 import { config } from "./config.mjs"  // config.mjs의 config 객체 가져옴
 import { connectDB } from "./db/database.mjs"
+import authRouter from "./router/auth.mjs"
+import postsRouter from "./router/posts.mjs"
 
 const app = express()
 
-// 미들웨어
+// 미들웨어 등록
 app.use(express.json())
+app.use("/auth", authRouter)
+app.use("/post", postsRouter)
+app.use((req, res) => {
+    res.sendStatus(404)
+}) 
 
-// 포트번호를 .env에서 설정한 포트번호로 가져올거임
-// config.mjs만들고 그 안에 객체를 불러와서 사용함 (config객체의 host의 port로 접근)
-// app.listen(config.host.port, () => {
-//     console.log("서버 실행 중..")
-// })
 
 // db/database.mjs 생성 : 위에 코드에서 db실행하는것도 같이 출력하기 위해 아래로 변경
 connectDB().then(() => {
