@@ -19,8 +19,12 @@ router.get("/:id", isAuth, postController.getPost)
 router.post("/", isAuth, postController.createPost) // isAuth: 로그인 된 사용자만
 
 // post 수정
+// http://127.0.0.1:8080/post/:id (PUT)
+router.put("/:id", isAuth, postController.updatePost)
 
 // post 삭제
+// http://127.0.0.1:8080/post/:id (DELETE)
+router.delete("/:id", isAuth, postController.deletePost)
 
 
 export default router

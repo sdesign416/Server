@@ -26,3 +26,33 @@ export async function getPost(req, res) {
         res.status(404).json({ message: `${id}의 포스트가 없습니다`})
     }
 }
+
+
+// id로 post 수정
+export async function updatePost(req, res) {
+    const id = req.params.id
+    const text = req.body.text
+    const post = await postRepository.getById(id)
+    if(!post){
+        return res.status(404).json({ message: `${id}의 포스트가 없습니다`})
+    }
+    if (post.idx !== req.id) {
+        return res.sendStatus(403)
+    }
+    const updated = await postRepository.update(id, text)
+    res.status(200).json(updated)
+}
+
+// id로 삭제
+export async function deletePost(req, res){
+    const id = req.params.id
+    const post = await postRepository.getById(id)
+    if(!post){
+        return res.status(404).json({ message: `${id}의 포스트가 없습니다`})
+    }
+    if(post.idx !== req.id){
+        return res.sendStatus(403) // json으로 보낼게 아니라서 sendStatus
+    }
+    await postRepository.remove(id)
+    res.sendStatus(204)
+}

@@ -30,6 +30,22 @@ export async function getAllByUserid() {
 export async function getById(id) {
     return getPosts().find({ _id: new ObjectId(id) }).next().then(mapOptionalPost)
 }
+
+// post _id로 수정하기
+export async function update(id, text) {
+    return getPosts().findOneAndUpdate(
+        { _id: new ObjectId(id) },
+        { $set: { text } },
+        { returnDocument: "after" }
+    ).then((result) => result)
+}
+
+// post id로 삭제하기
+export async function remove(id) {
+    return getPosts().deleteOne({ _id: new ObjectId(id) })
+}
+
+// 조회에 사용된 함수
 function mapOptionalPost(post){
     return post ? { ...post, id: post._id.toString() } : post
 }
