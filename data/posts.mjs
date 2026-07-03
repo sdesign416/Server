@@ -1,4 +1,4 @@
-import MongoDB from "mongodb"
+import MongoDB, { ObjectId } from "mongodb"
 import * as UserRepository from "./auth.mjs"
 import { getPosts } from "../db/database.mjs"
 
@@ -24,4 +24,12 @@ export async function getAll() {
 // post 전체 가져오기(id 있는 경우)
 export async function getAllByUserid() {
     return getPosts().find({userid}).sort({createdAt: -1}).toArray()
+}
+
+// post _id로 조회하기
+export async function getById(id) {
+    return getPosts().find({ _id: new ObjectId(id) }).next().then(mapOptionalPost)
+}
+function mapOptionalPost(post){
+    return post ? { ...post, id: post._id.toString() } : post
 }
