@@ -15,6 +15,12 @@ export async function createUser(user) {
     return getUsers().insertOne(user).then((result) => result.insertedId.toString())
 }
 
+// ObjectId 받음
+export async function findById(id) {
+    return getUsers().find({_id: new ObjectId(id)}).next().then(mapOptionalUser)
+    
+}
+
 // 있다면 문자열로 id를 객체현식으로 반환(없으면 그냥 null이 나올거임)
 function mapOptionalUser(user){
     return user ? {...user, id:user._id.toString()} : user
