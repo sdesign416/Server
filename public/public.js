@@ -370,7 +370,7 @@ function renderPosts(posts, isMine = false) {
                 ${isMine ? `
                     <div class="btn-box">
                         <button class="editBtn" onclick="editPost('${post._id}')">수정</button>
-                        <button class="deleteBtn">삭제</button>
+                        <button class="deleteBtn" onclick="deletePost('${post._id}')">삭제</button>
                     </div>
                 ` : ""}
             </div>
@@ -410,6 +410,33 @@ async function editPost(id) {
         console.log("게시글 수정 실패 :", error)
     }
 }
+
+// [11] 내 글 조회 > 삭제
+async function deletePost(id) {
+    // 삭제 여부 확인
+    const check = confirm("정말 삭제하시겠습니까?")
+    // 취소 누르면 종료
+    if (!check) {
+        return
+    }
+
+    try {
+        // JWT 토큰 가져오기
+        const token = localStorage.getItem("token")
+        // 삭제 요청
+        await fetch(`/post/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        // 삭제 후 내 게시글 다시 조회
+        myPostBtn.click()
+    } catch (error) {
+        console.log("게시글 삭제 실패 :", error)
+    }
+}
+
 
 
 // 프로그램 실핼 시 한 번 실행
