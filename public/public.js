@@ -369,7 +369,7 @@ function renderPosts(posts, isMine = false) {
                 </div>
                 ${isMine ? `
                     <div class="btn-box">
-                        <button class="editBtn">수정</button>
+                        <button class="editBtn" onclick="editPost('${post._id}')">수정</button>
                         <button class="deleteBtn">삭제</button>
                     </div>
                 ` : ""}
@@ -379,7 +379,37 @@ function renderPosts(posts, isMine = false) {
     })
 }
 
+// [10] 내 글 조회 > 수정
+async function editPost(id) {
+    // 수정할 내용 입력
+    const text = prompt("수정할 내용을 입력하세요.")
+    // 취소를 누르거나 아무것도 입력하지 않으면 종료
+    if (!text || text.trim() === "") {
+        return
+    }
 
+    try {
+        // JWT 토큰 가져오기
+        const token = localStorage.getItem("token")
+        // 수정 요청
+        await fetch(`/post/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                // 로그인 사용자 인증
+                "Authorization": `Bearer ${token}`
+            },
+            // 수정할 내용 전달
+            body: JSON.stringify({
+                text
+            })
+        })
+        // 수정 후 내 게시글 다시 조회
+        myPostBtn.click()
+    } catch (error) {
+        console.log("게시글 수정 실패 :", error)
+    }
+}
 
 
 // 프로그램 실핼 시 한 번 실행
