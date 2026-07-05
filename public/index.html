@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X SERVER</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <main id="XServer">
+        <!-- [1] 초기 화면(로그인, 회원가입 선택) -->
+        <section id="mSec">
+            <header>
+                <h1>X Server</h1>
+                <p>로그인 후 게시글을 확인하실 수 있습니다.</p>
+            </header>
+            <div class="mSec-menu">
+                <button id="showLoginBtn">로그인</button>
+                <button id="showSignupBtn">회원가입</button>
+            </div>
+        </section>
+
+        <!-- [2] 로그인 화면 -->
+        <section id="logSec" class="hidden">
+            <header>
+                <h1>로그인</h1>
+            </header>
+            <div class="input-box">
+                <input type="text" id="loginUserid" placeholder="아이디">
+                <input type="password" id="loginPassword" placeholder="비밀번호">
+                <button id="loginBtn">로그인</button>
+                <button class="backBtn">뒤로가기</button>
+            </div>
+        </section>
+
+        <!-- [3] 회원가입 화면 -->
+        <section id="signSec" class="hidden">
+            <header>
+                <h1>회원가입</h1>
+            </header>
+            <div class="input-box">
+                <input type="text" id="signupUserid" placeholder="아이디">
+                <input type="password" id="signupPassword" placeholder="비밀번호">
+                <input type="text" id="signupName" placeholder="이름">
+                <input type="email" id="signupEmail" placeholder="이메일">
+                <button id="signupBtn">회원가입</button>
+                <button class="backBtn">뒤로가기</button>
+            </div>
+        </section>
+
+        <!-- [4] 로그인 성공 후 화면 -->
+        <section id="postSec" class="hidden">
+            <header>
+                <h1>X SERVER</h1>
+            </header>
+
+            <div class="post-menu">
+                <button id="showWriteBtn">게시글 작성</button>
+                <button id="showSearchBtn">게시글 조회</button>
+                <button id="logoutBtn">로그아웃</button>
+            </div>
+            <!-- 글 작성 -->
+            <section id="postWrite" class="hidden">
+                <h2>게시글 작성</h2>
+                <div class="input-box">
+                    <textarea id="postInput" placeholder="게시글을 입력하세요"></textarea>
+                    <button id="addBtn">작성</button>
+                </div>
+            </section>
+            <!-- 글 조회 -->
+            <section id="postSearch" class="hidden">
+                <h2>게시글 조회</h2>
+                <div class="input-box">
+                    <input type="text" id="searchUserid" placeholder="글번호 입력">
+                    <button id="searchBtn">작성자 조회</button>
+                    <button id="myPostBtn">내 글 조회</button>
+                    <button id="allBtn">전체보기</button>
+                </div>
+            </section>
+            <!-- 글 목록 -->
+            <section class="post-read">
+                <div class="pr-count">
+                    <h2>게시글 목록</h2>
+                    <p id="postCount">총 0개</p>
+                </div>
+                <ul id="postList">
+                    <!-- 목록은 js -->
+                </ul>
+            </section>
+        </section>
+    </main>
+    <script src="./public.js"></script>
+</body>
+</html>

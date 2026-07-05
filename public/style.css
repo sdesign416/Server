@@ -1,0 +1,102 @@
+/* 공통 */
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background-color: #f5f7fb;
+    font-family: Arial, sans-serif;
+    color: #111;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #111;
+    color: #fff;
+}
+button:active {
+    transform: translateY(1px);
+}
+
+.input-box {
+    display: flex;    
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+}
+.input-box input,
+.input-box textarea{
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+.input-box textarea {
+    min-height: 90px;
+    resize: none;
+}
+.input-box button{
+    width: calc((100% - 12px)/2);
+}
+.backBtn, #logoutBtn {
+    background-color: #666 !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 섹션 공통 */
+#XServer {
+    max-width: 520px;
+    margin: 50px auto;
+}
+
+#XServer header {
+	position: relative;
+	text-align: center;
+	margin-bottom: 25px;
+}
+#XServer header h1 {
+    margin-bottom: 8px;
+}
+#XServer header p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+#XServer section {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 25px;
+}
+
+/* [1] 초기 화면 */
+#mSec .mSec-menu{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* [4] 로그인 성공 후 화면 */
+#postSec header{
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+}
+#postSec header h1{
+    width: 100%;
+}
+#postSec .post-menu{
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+#postSec .post-menu button{width:calc((100% - 16px) / 3)}
+#postSec #postWrite{text-align: center;}
+#postSec #postSearch{margin: 50px 0;}
+#postSec .post-read{margin-top: 20px;}
