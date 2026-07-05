@@ -233,6 +233,85 @@ addBtn.addEventListener("click", async () => {
     }
 })
 
+// [6] 조회: 전체 조회(가져오는 기능)
+async function loadPosts() {
+    try{
+        // JWT 토큰 먼저 가져옴 
+        const token = localStorage.getItem("token")
+        // 조회 API요청 (GET)
+        const response = await fetch("/post", {
+            headers:{"Authorization": `Bearer ${token}`}
+        })
+        // json 객체변환
+        const data = await response.json()
+
+        if (data.message) {
+            postList.innerHTML = `<li>${data.message}</li>`
+            postCount.textContent = "총 0개"
+            return
+        }
+        // 응답 배열이면 data, posts로 감싸져있으면 data.posts
+        const posts = Array.isArray(data) ? data : data.posts
+        // 이제 출력
+        renderPosts(posts)
+    }catch(error){
+        console.log("게시글 조회 실패: ", error)
+    }
+}
+
+// [6] 조회기능: 전체 조회
+allBtn.addEventListener("click", () => {
+    // 검색창 비우기
+    searchUserid.value = ""
+
+    // 전체 게시글 조회
+    loadPosts()
+})
+
+// [7] 글 목록 출력(눈에 실제 보이는)
+function renderPosts(posts, isMine = false) {
+    // 기존 목록 초기화
+    postList.innerHTML = ""
+    // 게시글이 없을 경우
+    if (!posts || posts.length === 0) {
+        postList.innerHTML = "<li>게시글이 없습니다.</li>"
+        postCount.textContent = "총 0개"
+        return
+    }
+    // 게시글 개수 출력
+    postCount.textContent = `총 ${posts.length}개`
+    // 게시글 배열 반복
+    posts.forEach((post) => {
+        const li = document.createElement("li")
+        li.innerHTML = `
+            <div class="info">
+                <div class="writer">
+                    ${post.name || "작성자 없음"}
+                    <span>${post.userid || ""}</span>
+                </div>
+                <div class="number">
+                    글번호 : ${post._id}
+                </div>
+                <div class="content">
+                    ${post.text || ""}
+                </div>
+                <div class="date">
+                    ${post.createdAt || ""}
+                </div>
+                ${isMine ? `
+                    <div class="btn-box">
+                        <button class="editBtn">수정</button>
+                        <button class="deleteBtn">삭제</button>
+                    </div>
+                ` : ""}
+            </div>
+        `
+        postList.appendChild(li)
+    })
+}
+
+
+
 
 // 프로그램 실핼 시 한 번 실행
 checkLogin()
