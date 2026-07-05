@@ -89,3 +89,106 @@ showSearchBtn.addEventListener("click", () => {
     postSearch.classList.toggle("hidden")
     postWrite.classList.add("hidden")
 })
+
+// [2] 회원가입
+signupBtn.addEventListener("click", async () => {
+    // 입력값 받아옴
+    const userid = signupUserid.value.trim()
+    const password = signupPassword.value.trim()
+    const name = signupName.value.trim()
+    const email = signupEmail.value.trim()
+
+    if (!userid || !password || !name || !email){
+        alert("정보를 모두 입력하세요.")
+        return
+    }
+
+    try{
+        // 데이터보냄
+        const response = await fetch("/auth/signup", {
+            method: "POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({
+                userid, password, name, email
+            })
+        })
+        // json 객체 변환
+        const data = await response.json()
+        // 가입 실패
+        if (data.message) {
+            alert(data.message)
+            return
+        }
+        // 가입 성공
+        alert("회원가입 성공! 로그인 해주세요.")
+        // 입력창 초기화
+        signupUserid.value = ""
+        signupPassword.value = ""
+        signupName.value = ""
+        signupEmail.value = ""
+
+        showLogin()
+    }catch (error) {
+        console.log("회원가입 실패 :", error)
+    }
+})
+
+// [3] 로그인
+loginBtn.addEventListener("click", async () => {
+    // 입력값 가져오기
+    const userid = loginUserid.value.trim()
+    const password = loginPassword.value.trim()
+    // 입력값 확인
+    if (!userid || !password) {
+        alert("아이디와 비밀번호를 입력하세요.")
+        return
+    }
+
+    try {
+        // 로그인 요청
+        const response = await fetch("/auth/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                userid, password
+            })
+        })
+        // json 객체 변환
+        const data = await response.json()
+        // 로그인 실패
+        if (data.message) {
+            alert(data.message)
+            return
+        }// 로그인 성공: JWT 토큰 저장
+        localStorage.setItem("token", data.token)
+        localStorage.setItem("userid", data.user.userid)
+        // 입력창 초기화
+        loginUserid.value = ""
+        loginPassword.value = ""
+
+        alert("로그인 성공")
+        showPost()
+    } catch (error) {
+        console.log("로그인 실패 :", error)
+    }
+})
+// 로그인체크 토큰
+function checkLogin() {
+    const token = localStorage.getItem("token")
+
+    if (token) {
+        showPost()
+    } else {
+        showMain()
+    }
+}
+
+// [4] 로그아웃
+logoutBtn.addEventListener("click", () => {
+    // JWT 토큰 삭제
+    localStorage.removeItem("token")
+    localStorage.removeItem("userid")
+    // 다시 메인이동
+    showMain()
+})
+
