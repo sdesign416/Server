@@ -36,13 +36,11 @@ const searchBtn = document.getElementById("searchBtn")
 const myPostBtn = document.getElementById("myPostBtn")
 const allBtn = document.getElementById("allBtn")
 
-
 // 게시글 작성/조회 화면 전환
 const showWriteBtn = document.getElementById("showWriteBtn")
 const showSearchBtn = document.getElementById("showSearchBtn")
 const postWrite = document.getElementById("postWrite")
 const postSearch = document.getElementById("postSearch")
-
 
 // [1] 화면전환 hidden기능
 // [1_1: 모든화면 숨김: 화면전환 시 남아있음 방지]
@@ -192,3 +190,49 @@ logoutBtn.addEventListener("click", () => {
     showMain()
 })
 
+// [5] 게시글 작성
+addBtn.addEventListener("click", async () => {
+    // 입력값 가져오기
+    const text = postInput.value.trim()
+    // 입력값 확인
+    if (!text) {
+        alert("게시글을 입력하세요.")
+        return
+    }
+    try {
+        // 저장된 JWT 토큰 가져오기
+        const token = localStorage.getItem("token")
+        // 게시글 작성 요청
+        const response = await fetch("/post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                text
+            })
+        })
+        // json 객체 변환
+        const data = await response.json()
+
+        if (data.message) {
+            alert(data.message)
+            return
+        }
+        // 작성 성공
+        alert("게시글 작성 완료")
+        // 입력창 비움
+        postInput.value = ""
+        // 작성 영역 닫기
+        postWrite.classList.add("hidden")
+        // 전체 게시글 다시 조회
+        loadPosts()
+    } catch (error) {
+        console.log("게시글 작성 실패 :", error)
+    }
+})
+
+
+// 프로그램 실핼 시 한 번 실행
+checkLogin()
