@@ -292,6 +292,8 @@ searchBtn.addEventListener("click", async () => {
         }
         // 응답 배열이면 data, posts로 감싸져있으면 data.posts
         const posts = Array.isArray(data) ? data : data.posts
+        // 입력창 초기화
+        searchUserid.value = ""
         // 가져온 전체 게시글 중 입력한 userid와 같은 글만 필터링
         const filteredPosts = posts.filter((post) => post.userid === userid)
         // 출력
