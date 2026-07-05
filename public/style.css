@@ -158,3 +158,17 @@ button:active {
     font-size: .85rem;
     opacity: .65;
 }
+
+/* 내 글 조회> 버튼 */
+#postList .btn-box{
+    display: flex;
+    gap: 4px;
+    justify-content: flex-end;
+}
+#postList .btn-box button{
+    padding: 5px 15px;
+    font-size: .75rem;
+    background-color: #999;
+    height: 35px;
+}
+#postList .btn-box button.deleteBtn{background-color: #bbb;}

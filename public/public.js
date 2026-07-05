@@ -301,6 +301,42 @@ searchBtn.addEventListener("click", async () => {
     }
 })
 
+// [9] 조회기능: 내 글 조회
+myPostBtn.addEventListener("click", async () => {
+    // 내 userid 받아옴(localStorage에서)
+    const userid = localStorage.getItem("userid")
+    if (!userid) {
+        alert("로그인 정보가 없습니다.")
+        return
+    }
+
+    try {
+        // JWT 토큰 먼저 가져옴 
+        const token = localStorage.getItem("token")
+        // 전체 게시글 조회
+        const response = await fetch("/post", {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        })
+        // json 객체변환
+        const data = await response.json()
+
+        if (data.message) {
+            alert(data.message)
+            return
+        }
+        // 응답 배열이면 data, posts로 감싸져있으면 data.posts
+        const posts = Array.isArray(data) ? data : data.posts
+        // 전체 게시글 중 로그인한 사용자의 글만 필터링
+        const myPosts = posts.filter((post) => post.userid === userid)
+        // 출력
+        renderPosts(myPosts, true)
+    } catch (error) {
+        console.log("내 게시글 조회 실패 :", error)
+    }
+})
+
 // [7] 글 목록 출력(눈에 실제 보이는)
 function renderPosts(posts, isMine = false) {
     // 기존 목록 초기화
